@@ -5,11 +5,13 @@ volcano = pd.read_csv("Volcanoes.txt")
 lat = list(volcano['LAT'])
 lon = list(volcano['LON'])
 elev = list(volcano['ELEV'])
+nam = list(volcano['NAME'])
 
 # a more concise format for displaying popup:
-html = """<h4>Volcano information:</h4>
-Height: %s m
-"""
+html = """
+<h4>Volcano information:</h4>
+<b>Name: </b> %s <p>
+<b>Height: </b> %s m </p>"""
 
 # a tile is simply a base layer or background offered by JavaScript
 # just specify which tile in the str format
@@ -33,8 +35,8 @@ fg.add_child(folium.GeoJson(data=open('world.json', 'r', encoding='utf-8-sig').r
 style_function=lambda x: {'fillColor': 'green' if x['properties']['POP2005'] < 10000000  
 else 'orange' if x['properties']['POP2005'] >= 10000000 and x['properties']['POP2005'] < 20000000 else 'red'}))
 
-for i, j, k in zip(lat, lon, elev):
-    iframe = folium.IFrame(html=html % str(k), width=200, height=100)
+for i, j, k, l in zip(lat, lon, elev, nam):
+    iframe = folium.IFrame(html=html % (str(l), str(k)), width=250, height=100)
     fg.add_child(folium.CircleMarker(location=[i,j], radius=6, popup=folium.Popup(iframe), 
     fill_color=color_change(k), color='grey', fill_opacity=0.7))
 
