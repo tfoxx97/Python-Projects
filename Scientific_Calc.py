@@ -1,7 +1,10 @@
 """
-Updated version of my previous GUI built
+Updated version of my previous GUI built: 11/17/2020
 Includes trig functions (sin, cos, tan)
 Exponents and logarithmic functions
+Better visual aspects as well
+Handles calculation errors
+Next step: .py to .exe desktop app :)
 """
 
 from tkinter import *
@@ -39,8 +42,7 @@ class Calculator():
             if self.op_pending == True:
                 self.operations()
             else:
-                self.total = float(text_box.get())
-        
+                self.total = float(text_box.get())        
         except ZeroDivisionError:
             text_box.insert(0, "Error!")
             return None
@@ -58,23 +60,8 @@ class Calculator():
             self.total *= self.current
         if self.op == "divide":
             self.total /= self.current
-        if self.op == "xroot2":
-            self.total = self.current**2
         if self.op == "xpowery":
             self.total = self.total ** self.current
-        if self.op == "squareroot":
-            self.total = math.sqrt(self.total)
-        if self.op == "factorial":
-            self.total = int(text_box.get())
-            self.total = math.factorial(self.total)
-        if self.op == "ln":
-            self.total = math.log(self.total)
-        if self.op == "log":
-            self.total = math.log(self.total, 10)
-        if self.op == "exp":
-            self.total = math.exp(self.total)
-        if self.op == "inverse":
-            self.total = 1 / self.total
         self.new_num = True
         self.op_pending = False 
         self.display(self.total)
@@ -97,6 +84,57 @@ class Calculator():
     def tan(self):
         self.eq = False 
         self.current = math.tan(math.radians(float(text_box.get())))
+        self.display(self.current)
+    #the try...except method is used to handle mathematical errors without disrupting the program:
+    def e_x(self):
+        try:
+            self.eq = False 
+            self.current = math.exp(float(text_box.get()))
+            self.display(self.current)
+        except OverflowError:
+            self.current = "Overflow Error"
+            self.display(self.current)
+
+    def ln(self):
+        try:
+            self.eq = False 
+            self.current = math.log(float(text_box.get()))
+            self.display(self.current)
+        except ValueError:
+            self.current = "Error!"
+            self.display(self.current)
+
+    def xroot2(self):
+        self.eq = False 
+        self.current = float(text_box.get())**2 
+        self.display(self.current)
+
+    def sqrtx(self):
+        try:
+            self.eq = False 
+            self.current = math.sqrt(float(text_box.get()))
+            self.display(self.current)
+        except ValueError:
+            self.current = "Error!"
+            self.display(self.current) 
+
+    def log10(self):
+        try:
+            self.eq = False 
+            self.current = math.log(float(text_box.get()), 10)
+            self.display(self.current)
+        except ValueError:
+            self.current = "Error!"
+            self.display(self.current)
+
+    def factoiral(self):
+        self.current = int(text_box.get())
+        self.current = math.factorial(self.current) 
+        self.display(self.current)
+
+    def inverse(self):
+        self.eq = False
+        self.current = 1 / float(text_box.get())
         self.display(self.current)
 
     def solve(self, s):
@@ -129,104 +167,106 @@ yay_science = Calculator()
 root = Tk()
 
 root.title("Scientific Calculator")
-root.geometry("510x280")
+root.geometry("755x345")
 root.configure(background="grey")
-text_box = Entry(root, justify=RIGHT, width=25, font="Times 16 bold", bd=5)
-text_box.grid(row=1, columnspan=8, ipadx=70, ipady=2)
+text_box = Entry(root, justify=RIGHT, width=25, font="Times 16 bold", bd=10)
+text_box.grid(row=1, columnspan=5, ipadx=70, ipady=2)
 text_box.insert(0, "0")
+image = PhotoImage(file = "thank_u_tam.png")
+reimage = image.subsample(40, 40)
 
 #creation of all buttons go here:
-button_7 = Button(root, text='7', fg='black', bg='royalblue1', height=3,width=7, command=lambda: yay_science.press_button(7))
+button_7 = Button(root, text='7', font='helvetica 14 bold', fg='black', bg='steelblue1', bd=6, height=2,width=6, command=lambda: yay_science.press_button(7))
 button_7.grid(row=2, column=0, padx=2, pady=2, sticky="ew")
 
-button_8 = Button(root, text='8', fg='black', bg='royalblue1', height=3,width=7, command=lambda: yay_science.press_button(8))
+button_8 = Button(root, text='8', font='helvetica 14 bold', fg='black', bg='steelblue1', bd=6, height=2,width=6, command=lambda: yay_science.press_button(8))
 button_8.grid(row=2, column=1, padx=2, pady=2, sticky="ew")
 
-button_9 = Button(root, text='9', fg='black', bg='royalblue1', height=3,width=7, command=lambda: yay_science.press_button(9))
+button_9 = Button(root, text='9', font='helvetica 14 bold', fg='black', bg='steelblue1', bd=6, height=2,width=6, command=lambda: yay_science.press_button(9))
 button_9.grid(row=2, column=2, padx=2, pady=2, sticky="ew")
 
-button_4 = Button(root, text='4', fg='black', bg='royalblue2', height=3,width=7, command=lambda: yay_science.press_button(4))
+button_4 = Button(root, text='4', font='helvetica 14 bold', fg='black', bg='steelblue1', bd=6, height=2,width=6, command=lambda: yay_science.press_button(4))
 button_4.grid(row=3, column=0, padx=2, pady=2, sticky="ew")
 
-button_5 = Button(root, text='5', fg='black', bg='royalblue2', height=3,width=7, command=lambda: yay_science.press_button(5))
+button_5 = Button(root, text='5', font='helvetica 14 bold', fg='black', bg='steelblue1', bd=6, height=2,width=6, command=lambda: yay_science.press_button(5))
 button_5.grid(row=3, column=1, padx=2, pady=2, sticky="ew")
 
-button_6 = Button(root, text='6', fg='black', bg='royalblue2', height=3,width=7, command=lambda: yay_science.press_button(6))
+button_6 = Button(root, text='6', font='helvetica 14 bold', fg='black', bg='steelblue1', bd=6, height=2,width=6, command=lambda: yay_science.press_button(6))
 button_6.grid(row=3, column=2, padx=2, pady=2, sticky="ew")
 
-button_1 = Button(root, text='1', fg='black', bg='blue2', height=3,width=7, command=lambda: yay_science.press_button(1))
+button_1 = Button(root, text='1', font='helvetica 14 bold', fg='black', bg='steelblue1', bd=6, height=2,width=6, command=lambda: yay_science.press_button(1))
 button_1.grid(row=4, column=0, padx=2, pady=2, sticky="ew")
 
-button_2 = Button(root, text='2', fg='black', bg='blue2', height=3,width=7, command=lambda: yay_science.press_button(2))
+button_2 = Button(root, text='2', font='helvetica 14 bold', fg='black', bg='steelblue1', bd=6, height=2,width=6, command=lambda: yay_science.press_button(2))
 button_2.grid(row=4, column=1, padx=2, pady=2, sticky="ew")
 
-button_3 = Button(root, text='3', fg='black', bg='blue2', height=3,width=7, command=lambda: yay_science.press_button(3))
+button_3 = Button(root, text='3', font='helvetica 14 bold', fg='black', bg='steelblue1', bd=6, height=2,width=6, command=lambda: yay_science.press_button(3))
 button_3.grid(row=4, column=2, padx=2, pady=2, sticky="ew")
 
-button_0 = Button(root, text='0', fg='black', bg='blue3', height=3,width=7, command=lambda: yay_science.press_button(0))
+button_0 = Button(root, text='0', font='helvetica 14 bold', fg='black', bg='steelblue1', bd=6, height=2,width=6, command=lambda: yay_science.press_button(0))
 button_0.grid(row=5, columnspan=2, padx=2, pady=2, sticky="ew")
 
-button_dot = Button(root, text=' . ', fg='black', bg='blue2', height=3,width=7, command=lambda: yay_science.press_button('.'))
+button_dot = Button(root, text=' . ', font='helvetica 14 bold', fg='black', bg='steelblue1', bd=6, height=2,width=6, command=lambda: yay_science.press_button('.'))
 button_dot.grid(row=5, column=2, padx=2, pady=2, sticky="ew")
 
-button_div = Button(root, text=' / ', fg='black', bg='orange', height=3, width=7, command=lambda: yay_science.solve("divide"))
+button_div = Button(root, text=' / ', font='helvetica 14 bold', fg='black', bg='orange', bd=6, height=2, width=6, command=lambda: yay_science.solve("divide"))
 button_div.grid(row=2, column=3, padx=2, pady=2, sticky="ew")
 
-button_mult = Button(root, text=' x ', fg='black', bg='orange', height=3, width=7, command=lambda: yay_science.solve("multiply"))
+button_mult = Button(root, text=' x ', font='helvetica 14 bold', fg='black', bg='orange', bd=6, height=2, width=6, command=lambda: yay_science.solve("multiply"))
 button_mult.grid(row=3, column=3, padx=2, pady=2, sticky="ew")
 # the "-" is so tiny...
-button_minus = Button(root, text=' -- ', font="Arial 9", fg='black', bg='orange', height=3, width=7, command=lambda: yay_science.solve("subtract"))
+button_minus = Button(root, text=' -- ', font='helvetica 14 bold', fg='black', bg='orange', bd=6, height=2, width=6, command=lambda: yay_science.solve("subtract"))
 button_minus.grid(row=4, column=3, padx=2, pady=2, sticky="ew")
 
-button_add = Button(root, text=' + ', fg='black', bg='orange', height=3, width=7, command=lambda: yay_science.solve("add"))
+button_add = Button(root, text=' + ', font='helvetica 14 bold', fg='black', bg='orange', bd=6, height=2, width=6, command=lambda: yay_science.solve("add"))
 button_add.grid(row=5, column=3, padx=2, pady=2, sticky="ew")
 
-button_ac = Button(root, text="AC", fg="black", bg="red", height=3, width=7, command=yay_science.clear_all)
+button_ac = Button(root, text="AC", font='helvetica 14 bold', fg="black", bg="orange red", bd=6, height=2, width=6, command=yay_science.clear_all)
 button_ac.grid(row=2, column=4, padx=2, pady=2, sticky="ew")
 
-button_clear = Button(root, text="C", fg="black", bg="yellow", height=3, width=7, command=yay_science.clear)
+button_clear = Button(root, text="C", font='helvetica 14 bold', fg="black", bg="yellow", bd=6, height=2, width=6, command=yay_science.clear)
 button_clear.grid(row=3, column=4, padx=2, pady=2, sticky="ew")
 
-button_neg = Button(root, text="+/-", fg="black", bg="orange", height=3, width=7, command=yay_science.sign)
+button_neg = Button(root, text="+/-", font='helvetica 14 bold', fg="black", bg="orange", bd=6, height=2, width=6, command=yay_science.sign)
 button_neg.grid(row=4, column=4, padx=2, pady=2, sticky="ew")
 
-button_equal = Button(root, text=" = ", fg="black", bg="orange", height=3, width=7, command=yay_science.calc_total)
+button_equal = Button(root, text=" = ", font='helvetica 14 bold', fg="black", bg="orange", bd=6, height=2, width=6, command=yay_science.calc_total)
 button_equal.grid(row=5, column=4, padx=2, pady=2, sticky="ew")
 
-button_pi = Button(root, text="pi", fg="black", bg="seagreen1", height=3, width=7, command=yay_science.pi)
+button_pi = Button(root, text="π", font='helvetica 14 bold', fg="black", bg="seagreen1", bd=6, height=2, width=6, command=yay_science.pi)
 button_pi.grid(row=2, column=5, padx=2, pady=2, sticky="ew")
 
-button_sin = Button(root, text="sin", fg="black", bg="seagreen1", height=3, width=7, command=yay_science.sin)
+button_sin = Button(root, text="sin", font='helvetica 14 bold', fg="black", bg="seagreen1", bd=6, height=2, width=6, command=yay_science.sin)
 button_sin.grid(row=3, column=5, padx=2, pady=2, sticky="ew")
 
-button_cos = Button(root, text="cos", fg="black", bg="seagreen1", height=3, width=7, command=yay_science.cos)
+button_cos = Button(root, text="cos", font='helvetica 14 bold', fg="black", bg="seagreen1", bd=6, height=2, width=6, command=yay_science.cos)
 button_cos.grid(row=4, column=5, padx=2, pady=2, sticky="ew")
 
-button_tan = Button(root, text="tan", fg="black", bg="seagreen1", height=3, width=7, command=yay_science.tan)
+button_tan = Button(root, text="tan", font='helvetica 14 bold', fg="black", bg="seagreen1", bd=6, height=2, width=6, command=yay_science.tan)
 button_tan.grid(row=5, column=5, padx=2, pady=2, sticky="ew")
 
-button_x2 = Button(root, text="x^2", fg="black", bg="seagreen2", height=3, width=7, command=lambda: yay_science.solve("xroot2"))
+button_x2 = Button(root, text="x^2", font='helvetica 14 bold', fg="black", bg="seagreen2", bd=6, height=2, width=6, command=yay_science.xroot2)
 button_x2.grid(row=2, column=6, padx=2, pady=2, sticky="ew")
 
-button_xy = Button(root, text="x^y", fg="black", bg="seagreen2", height=3, width=7, command=lambda: yay_science.solve("xpowery"))
+button_xy = Button(root, text="x^y", font='helvetica 14 bold', fg="black", bg="seagreen2", bd=6, height=2, width=6, command=lambda: yay_science.solve("xpowery"))
 button_xy.grid(row=3, column=6, padx=2, pady=2, sticky="ew")
-
-button_sqrt = Button(root, text="sqrt(x)", fg="black", bg="seagreen2", height=3, width=7, command=lambda: yay_science.solve("squareroot"))
+#buttons with images do not need height, width argument for button size, rather those become size of image in pixels:
+button_sqrt = Button(root, image=reimage, fg="black", bg="seagreen2", bd=6, command=yay_science.sqrtx)
 button_sqrt.grid(row=4, column=6, padx=2, pady=2, sticky="ew")
 
-button_fact = Button(root, text="x!", fg="black", bg="seagreen2", height=3, width=7, command=lambda: yay_science.solve("factorial"))
+button_fact = Button(root, text="x!", font='helvetica 14 bold', fg="black", bg="seagreen2", bd=6, height=2, width=6, command=yay_science.factoiral)
 button_fact.grid(row=5, column=6, padx=2, pady=2, sticky="ew")
 
-button_e = Button(root, text="e^x", fg="black", bg="seagreen3", height=3, width=7, command=lambda: yay_science.solve("exp"))
+button_e = Button(root, text="e^x", font='helvetica 14 bold', fg="black", bg="seagreen3", bd=6, height=2, width=6, command=yay_science.e_x)
 button_e.grid(row=2, column=7, padx=2, pady=2, sticky="ew")
 
-button_ln = Button(root, text="ln", fg="black", bg="seagreen3", height=3, width=7, command=lambda: yay_science.solve("ln"))
+button_ln = Button(root, text="ln", font='helvetica 14 bold', fg="black", bg="seagreen3", bd=6, height=2, width=6, command=yay_science.ln)
 button_ln.grid(row=3, column=7, padx=2, pady=2, sticky="ew")
 
-button_log = Button(root, text="log10", fg="black", bg="seagreen3", height=3, width=7, command=lambda: yay_science.solve("log"))
+button_log = Button(root, text="log10", font='helvetica 14 bold', fg="black", bg="seagreen3", bd=6, height=2, width=6, command=yay_science.log10)
 button_log.grid(row=4, column=7, padx=2, pady=2, sticky="ew")
 
-button_inv = Button(root, text="1/x", fg="black", bg="seagreen3", height=3, width=7, command=lambda: yay_science.solve("inverse"))
+button_inv = Button(root, text="1/x", font='helvetica 14 bold', fg="black", bg="seagreen3", bd=6, height=2, width=6, command=yay_science.inverse)
 button_inv.grid(row=5, column=7, padx=2, pady=2, sticky="ew")
 
 if __name__ == '__main__':
