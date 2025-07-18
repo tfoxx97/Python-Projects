@@ -29,7 +29,7 @@ def get_dates():
 def get_type():
     game_type = random.choices(['at', 'vs'], weights=None, k=12)
     bye = ['BYE', 'BYE']
-    game_types = game_type + bye 
+    game_types = game_type + bye
     random.shuffle(game_types)
     return game_types
 
